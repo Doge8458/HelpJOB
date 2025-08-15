@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - HelpJOB</title>
+    <!-- Carga de Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuración de Tailwind para usar fuentes personalizadas y colores -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#6a5acd',
+                        'secondary-purple': '#8a2be2',
+                        'dark-bg': '#483d8b',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--tw-gradient-stops)) var(--dark-bg);
+            --tw-gradient-from: #6a5acd; /* primary-blue */
+            --tw-gradient-to: #8a2be2; /* secondary-purple */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+        }
+        body::before {
+            top: 10%;
+            left: 5%;
+        }
+        body::after {
+            bottom: 10%;
+            right: 5%;
+            width: 250px;
+            height: 250px;
+        }
+
+        /* Estilos personalizados para los inputs con iconos */
+        .input-icon-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-icon-container .icon {
+            position: absolute;
+            left: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .input-icon-container input {
+            padding-left: 2.5rem;
+            width: 100%;
+        }
+        .input-icon-container .password-toggle {
+            position: absolute;
+            right: 1rem;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+    <!-- Para iconos, usamos Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-primary-blue to-secondary-purple flex items-center justify-center min-h-screen font-inter text-white">
+
+    <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl shadow-2xl p-8 md:p-12 w-full max-w-md border border-white border-opacity-20 relative z-10">
+        <h1 class="text-3xl md:text-4xl font-bold text-center mb-4">Iniciar Sesión</h1>
+        <p class="text-lg text-center text-gray-200 mb-8">Accede a tu cuenta de HelpJOB</p>
+
+        <form id="loginForm" class="space-y-6">
+            <!-- Email -->
+            <div>
+                <label for="email" class="block text-gray-200 text-sm font-medium mb-2">Email</label>
+                <div class="input-icon-container">
+                    <i class="fas fa-envelope icon"></i>
+                    <input type="email" id="email" name="email" placeholder="tu@email.com" required
+                           class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent text-white placeholder-gray-300 transition duration-300">
+                </div>
+            </div>
+
+            <!-- Contraseña -->
+            <div>
+                <label for="password" class="block text-gray-200 text-sm font-medium mb-2">Contraseña</label>
+                <div class="input-icon-container">
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" id="password" name="password" placeholder="Tu contraseña" required
+                           class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent text-white placeholder-gray-300 transition duration-300">
+                    <i class="fas fa-eye password-toggle" data-target="password"></i>
+                </div>
+            </div>
+
+            <!-- Mensajes de Alerta -->
+            <div id="message_box" class="hidden bg-red-600 bg-opacity-70 text-white p-3 rounded-lg text-center font-semibold mb-4">
+                <!-- Los mensajes de error/éxito se insertarán aquí -->
+            </div>
+
+            <!-- Botón de Iniciar Sesión -->
+            <div>
+                <button type="submit"
+                        class="w-full py-3 rounded-lg bg-gradient-to-r from-primary-blue to-secondary-purple hover:from-secondary-purple hover:to-primary-blue text-white text-lg font-semibold shadow-md transform hover:scale-105 transition duration-300 ease-in-out">
+                    Iniciar Sesión
+                </button>
+            </div>
+        </form>
+
+        <p class="text-center text-gray-200 mt-8">
+            ¿No tienes una cuenta? <a href="register.html" class="text-blue-300 hover:underline font-semibold">Regístrate aquí</a>
+        </p>
+        <p class="text-center text-gray-200 mt-4">
+            <a href="#" class="text-blue-300 hover:underline font-semibold">¿Olvidaste tu contraseña?</a>
+        </p>
+    </div>
+
+    <!-- Script principal de JavaScript -->
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

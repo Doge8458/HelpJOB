@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Aplicantes - HelpJOB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { inter: ['Inter', 'sans-serif'] },
+                    colors: {
+                        'primary-blue': '#6a5acd', 'secondary-purple': '#8a2be2',
+                        'dark-bg': '#483d8b', 'light-purple': '#9370DB',
+                        'status-accepted': 'bg-green-500', 'status-rejected': 'bg-red-500',
+                        'status-pending': 'bg-yellow-500'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #6a5acd, #8a2be2);
+            min-height: 100vh; color: #fff;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark-bg pt-24 pb-8">
+
+    <header class="w-full bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg py-4 px-6 flex justify-between items-center fixed top-0 left-0 right-0 z-50 shadow-md">
+        <!-- El header se llenará dinámicamente con JS -->
+        <a href="index.html" class="flex items-center">
+            <img src="../assets/images/HelpJOB.png" alt="HelpJOB Logo" class="h-10 w-auto mr-2" />
+            <!-- <span class="text-white text-2xl font-bold">HelpJOB</span> -->
+        </a>
+        <nav>
+            <ul class="flex items-center space-x-6">
+                <li><a href="index.html" class="text-white hover:text-light-purple transition">Inicio</a></li>
+                <li><a href="my_applications.html" id="myApplicationsLink" class="text-white hover:text-light-purple transition hidden"><i class="fas fa-file-alt mr-1"></i> Mis Postulaciones</a></li>
+                <li><a href="messages.html" id="messagesLink" class="text-white hover:text-light-purple transition hidden"><i class="fas fa-comments mr-1"></i> Mensajes</a></li>
+                <li><a href="manage_jobs.html" id="dashboardLink" class="text-white hover:text-light-purple transition hidden">Dashboard</a></li>
+                <li id="profileSectionHeader" class="relative group hidden">
+                    <button class="flex items-center text-white focus:outline-none">
+                        <img id="profileImageHeader" src="" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-white mr-2">
+                        <span id="profileNameHeader"></span>
+                        <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                    </button>
+                    <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white bg-opacity-20 backdrop-filter backdrop-blur-md rounded-md shadow-lg py-1 hidden group-hover:block">
+                        <a href="profile.html" class="block px-4 py-2 text-white hover:bg-white hover:bg-opacity-20">Ver Perfil</a>
+                        <button id="logoutButton" class="block w-full text-left px-4 py-2 text-white hover:bg-white hover:bg-opacity-20">Cerrar Sesión</button>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4">
+        <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl shadow-2xl p-8 md:p-12 w-full max-w-6xl mx-auto border border-white border-opacity-20">
+            <h1 id="job-title-header" class="text-3xl md:text-4xl font-bold text-center mb-8">Cargando aplicantes...</h1>
+            <div id="message_box" class="hidden"></div>
+            <div id="applicants-list" class="space-y-6">
+                <div id="loading_spinner" class="text-center text-lg">
+                    <i class="fas fa-spinner fa-spin text-light-purple text-4xl mb-4"></i>
+                    <p>Cargando...</p>
+                </div>
+                <div id="no-applicants-message" class="text-center text-lg hidden">
+                    <p>Aún no hay aplicantes para esta oferta.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para ver el perfil del aplicante -->
+    <div id="applicantProfileModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[1000] hidden">
+        <div class="bg-dark-bg p-8 rounded-lg shadow-xl w-11/12 max-w-2xl text-white border border-white border-opacity-20 max-h-[90vh] overflow-y-auto">
+            <div id="modal-content"></div>
+            <button id="closeModalBtn" class="mt-6 w-full py-2 rounded-lg bg-gray-600 hover:bg-gray-700 transition">Cerrar</button>
+        </div>
+    </div>
+
+    <div id="chat-widget-container"></div>
+    <script src="../assets/js/main.js"></script>
+    <script>
+        function createApplicantCard(applicant) {
+            const card = document.createElement("div");
+            card.classList.add("applicant-card");
+            // Genera el data-applicant usando JSON.stringify
+            card.dataset.applicant = JSON.stringify({
+                user_id: applicant.user_id, // ID real del aspirante
+                full_name: applicant.full_name,
+                email: applicant.email,
+                profile_image_path: applicant.profile_image_path,
+                // ...agrega otros campos si los necesitas
+            });
+
+            return card;
+        }
+    </script>
+</body>
+</html>

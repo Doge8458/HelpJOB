@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicar Empleo - HelpJOB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#6a5acd',
+                        'secondary-purple': '#8a2be2',
+                        'dark-bg': '#483d8b',
+                        'light-purple': '#9370DB',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--tw-gradient-stops)) var(--dark-bg);
+            --tw-gradient-from: #6a5acd;
+            --tw-gradient-to: #8a2be2;
+            min-height: 100vh;
+            color: #fff;
+            padding-top: 6rem;
+            padding-bottom: 2rem;
+        }
+        #map { 
+            height: 350px; 
+            border-radius: 0.5rem; 
+            z-index: 10; 
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body class="bg-gradient-to-br from-primary-blue to-secondary-purple">
+
+    <header class="w-full bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg py-4 px-6 flex justify-between items-center fixed top-0 left-0 right-0 z-50 shadow-md">
+        <!-- Contenido del Header sin cambios -->
+        <a href="index.html" class="flex items-center">
+            <img src="../assets/images/HelpJOB.png" alt="HelpJOB Logo" class="h-12 w-auto mr-5" />
+            <!-- <span class="text-white text-2xl font-bold">HelpJOB</span> -->
+        </a>
+        <nav>
+            <ul class="flex items-center space-x-6">
+                <li><a href="index.html" class="text-white hover:text-light-purple transition duration-300"><i class="fas fa-home mr-1"></i> Inicio</a></li>
+                <li><a href="manage_jobs.html" id="dashboardLink" class="text-white hover:text-light-purple transition duration-300 hidden"><i class="fas fa-tachometer-alt mr-1"></i> Dashboard</a></li>
+                <li id="profileSectionHeader" class="relative group hidden">
+                    <a href="#" class="flex items-center text-white hover:text-light-purple transition duration-300">
+                        <img id="profileImageHeader" src="https://placehold.co/40x40/6a5acd/ffffff?text=U" alt="Profile" class="w-10 h-10 rounded-full border-2 border-white mr-2">
+                        <span id="profileNameHeader" class="font-semibold">Mi Perfil</span>
+                    </a>
+                    <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white bg-opacity-10 backdrop-filter backdrop-blur-md rounded-md shadow-lg py-1 hidden group-hover:block">
+                        <a href="profile.html" class="block px-4 py-2 text-white hover:bg-white hover:bg-opacity-20">Ver Perfil</a>
+                        <button id="logoutButton" class="block w-full text-left px-4 py-2 text-white hover:bg-white hover:bg-opacity-20">Cerrar Sesión</button>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-10">
+        <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl shadow-2xl p-8 md:p-12 w-full max-w-4xl mx-auto border border-white border-opacity-20">
+            <h1 id="form-title" class="text-3xl md:text-4xl font-bold text-center mb-4">Publicar Nuevo Empleo</h1>
+            <p id="form-subtitle" class="text-lg text-center text-gray-200 mb-8">Completa los detalles de la vacante</p>
+
+            <form id="postJobForm" class="space-y-6">
+                <input type="hidden" id="post_id" name="post_id">
+                
+                <!-- Campos de Título, Descripción, etc. sin cambios -->
+                <div>
+                    <label for="title" class="block text-gray-200 text-sm font-medium mb-2">Título del Empleo <span class="text-red-400">*</span></label>
+                    <input type="text" id="title" name="title" required class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white placeholder-gray-300">
+                </div>
+                <div>
+                    <label for="description" class="block text-gray-200 text-sm font-medium mb-2">Descripción <span class="text-red-400">*</span></label>
+                    <textarea id="description" name="description" rows="8" required class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white placeholder-gray-300"></textarea>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="requirements" class="block text-gray-200 text-sm font-medium mb-2">Requisitos</label>
+                        <textarea id="requirements" name="requirements" rows="5" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white placeholder-gray-300"></textarea>
+                    </div>
+                    <div>
+                        <label for="benefits" class="block text-gray-200 text-sm font-medium mb-2">Beneficios</label>
+                        <textarea id="benefits" name="benefits" rows="5" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white placeholder-gray-300"></textarea>
+                    </div>
+                </div>
+
+                <!-- Sección del Mapa-->
+                <div>
+                    <label for="job_location_text" class="block text-gray-200 text-sm font-medium mb-2">Ubicación (Texto) <span class="text-red-400">*</span></label>
+                    <input type="text" id="job_location_text" name="job_location_text" required placeholder="Ej: Pachuca de Soto, Hgo." class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white placeholder-gray-300">
+                    
+                    <label for="map_search" class="block text-gray-200 text-sm font-medium mb-2 mt-4">Buscar Dirección en el Mapa</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="map_search" placeholder="Escribe una dirección para buscar..." class="flex-grow p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white placeholder-gray-300">
+                        <button type="button" id="search_map_btn" class="px-4 py-2 rounded-lg bg-primary-blue hover:bg-secondary-purple transition-colors"><i class="fas fa-search"></i></button>
+                    </div>
+
+                    <p class="text-xs text-gray-300 mt-2">O arrastra el marcador en el mapa para ajustar la ubicación exacta.</p>
+                    <div id="map" class="mt-4"></div>
+                    <input type="hidden" id="latitude" name="latitude">
+                    <input type="hidden" id="longitude" name="longitude">
+                </div>
+
+                <!-- campos -->
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="job_type" class="block text-gray-200 text-sm font-medium mb-2">Tipo de Jornada <span class="text-red-400">*</span></label>
+                        <select id="job_type" name="job_type" required class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white">
+                            <option value="" disabled selected class="bg-dark-bg">Selecciona una opción</option>
+                            <option value="Full-time" class="bg-dark-bg">Tiempo Completo</option>
+                            <option value="Part-time" class="bg-dark-bg">Medio Tiempo</option>
+                            <option value="Contract" class="bg-dark-bg">Contrato</option>
+                            <option value="Temporary" class="bg-dark-bg">Temporal</option>
+                            <option value="Internship" class="bg-dark-bg">Pasantía</option>
+                            <option value="Other" class="bg-dark-bg">Otro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="salary" class="block text-gray-200 text-sm font-medium mb-2">Salario (Opcional)</label>
+                        <input type="text" id="salary" name="salary" placeholder="Ej: $15,000 - $20,000 MXN/mes" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white placeholder-gray-300">
+                    </div>
+                </div>
+                <div>
+                    <label for="category" class="block text-gray-200 text-sm font-medium mb-2">Categoría <span class="text-red-400">*</span></label>
+                    <select id="category" name="category" required class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white">
+                        <option value="" disabled selected class="bg-dark-bg">Selecciona una opción</option>
+                        <option value="Technology" class="bg-dark-bg">Tecnología</option>
+                        <option value="Design" class="bg-dark-bg">Diseño</option>
+                        <option value="Marketing" class="bg-dark-bg">Marketing</option>
+                        <option value="Sales" class="bg-dark-bg">Ventas</option>
+                        <option value="Human Resources" class="bg-dark-bg">Recursos Humanos</option>
+                        <option value="Finance" class="bg-dark-bg">Finanzas</option>
+                        <option value="Other" class="bg-dark-bg">Otra</option>
+                    </select>
+                </div>
+
+                <div id="message_box" class="hidden text-white p-3 rounded-lg text-center font-semibold"></div>
+                
+                <button type="submit" id="submit-button" class="w-full py-3 rounded-lg bg-gradient-to-r from-primary-blue to-secondary-purple hover:from-secondary-purple hover:to-primary-blue text-white text-lg font-semibold shadow-md transform hover:scale-105 transition duration-300">
+                    Publicar Empleo
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

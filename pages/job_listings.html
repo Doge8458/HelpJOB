@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ofertas de Trabajo - HelpJOB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#6a5acd',
+                        'secondary-purple': '#8a2be2',
+                        'dark-bg': '#483d8b',
+                        'light-purple': '#9370DB',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #6a5acd, #8a2be2);
+            min-height: 100vh;
+            color: #fff;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark-bg">
+
+    <!-- Encabezado / Navbar -->
+    <header class="w-full bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg py-4 px-6 flex justify-between items-center sticky top-0 z-50 shadow-md">
+        <a href="index.html" class="flex items-center">
+            <img src="../assets/images/HelpJOB.png" alt="HelpJOB Logo" class="h-12 w-auto mr-5" />
+            <!-- <span class="text-white text-2xl font-bold">HelpJOB</span> -->
+        </a>
+        <nav>
+            <ul class="flex items-center space-x-6">
+                <li><a href="index.html" class="text-white hover:text-light-purple transition">Inicio</a></li>
+                <li><a href="job_listings.html" class="text-white hover:text-light-purple transition">Ver Empleos</a></li>
+                <li><a href="my_applications.html" id="myApplicationsLink" class="text-white hover:text-light-purple transition hidden"><i class="fas fa-file-alt mr-1"></i> Mis Postulaciones</a></li>
+                <li><a href="messages.html" id="messagesLink" class="text-white hover:text-light-purple transition hidden"><i class="fas fa-comments mr-1"></i> Mensajes</a></li>
+                <li><a href="manage_jobs.html" id="dashboardLink" class="text-white hover:text-light-purple transition hidden">Dashboard</a></li>
+                
+                <!-- Contenedor del Perfil -->
+                <li id="profileSectionHeader" class="relative group hidden">
+                    <button class="flex items-center text-white focus:outline-none">
+                        <img id="profileImageHeader" src="" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-white mr-2">
+                        <span id="profileNameHeader"></span>
+                        <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                    </button>
+                    <!-- Menú Desplegable -->
+                    <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white bg-opacity-20 backdrop-filter backdrop-blur-md rounded-md shadow-lg py-1 hidden group-hover:block">
+                        <a href="profile.html" class="block px-4 py-2 text-white hover:bg-white hover:bg-opacity-20">Ver Perfil</a>
+                        <button id="logoutButton" class="block w-full text-left px-4 py-2 text-white hover:bg-white hover:bg-opacity-20">Cerrar Sesión</button>
+                    </div>
+                </li>
+                
+                <!-- Botones para No Logueados -->
+                <li><a href="login.html" id="loginButtonHeader" class="px-4 py-2 rounded-lg bg-white bg-opacity-20 hover:bg-opacity-30 transition hidden">Iniciar Sesión</a></li>
+                <li><a href="register.html" id="registerButtonHeader" class="px-4 py-2 rounded-lg bg-gradient-to-r from-primary-blue to-secondary-purple hover:from-secondary-purple hover:to-primary-blue transition hidden">Registrarse</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-16">
+        <section class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Encuentra tu Próximo Empleo</h1>
+            <p class="text-lg md:text-xl text-gray-200">Explora las últimas ofertas de trabajo publicadas en nuestra plataforma.</p>
+        </section>
+
+        <!-- NUEVA SECCIÓN DE FILTROS Y BÚSQUEDA -->
+        <section id="filter-section" class="mb-12 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl shadow-lg p-6 border border-white border-opacity-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+                <div>
+                    <label for="search_input" class="block text-sm font-medium mb-2 text-gray-200">Palabra Clave</label>
+                    <input type="text" id="search_input" placeholder="Título, empresa, etc." class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue text-white placeholder-gray-300">
+                </div>
+                <div>
+                    <label for="filter_category" class="block text-sm font-medium mb-2 text-gray-200">Categoría</label>
+                    <select id="filter_category" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue text-white">
+                        <option value="" class="bg-dark-bg">Todas</option>
+                        <option value="Technology" class="bg-dark-bg">Tecnología</option>
+                        <option value="Design" class="bg-dark-bg">Diseño</option>
+                        <option value="Marketing" class="bg-dark-bg">Marketing</option>
+                        <option value="Sales" class="bg-dark-bg">Ventas</option>
+                        <option value="Human Resources" class="bg-dark-bg">Recursos Humanos</option>
+                        <option value="Finance" class="bg-dark-bg">Finanzas</option>
+                        <option value="Other" class="bg-dark-bg">Otra</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filter_job_type" class="block text-sm font-medium mb-2 text-gray-200">Tipo de Jornada</label>
+                    <select id="filter_job_type" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue text-white">
+                        <option value="" class="bg-dark-bg">Todas</option>
+                        <option value="Full-time" class="bg-dark-bg">Tiempo Completo</option>
+                        <option value="Part-time" class="bg-dark-bg">Medio Tiempo</option>
+                        <option value="Contract" class="bg-dark-bg">Contrato</option>
+                        <option value="Temporary" class="bg-dark-bg">Temporal</option>
+                        <option value="Internship" class="bg-dark-bg">Pasantía</option>
+                        <option value="Other" class="bg-dark-bg">Otro</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="sort_by_date" class="block text-sm font-medium mb-2 text-gray-200">Ordenar por</label>
+                    <select id="sort_by_date" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue text-white">
+                        <option value="newest" class="bg-dark-bg">Más Recientes</option>
+                        <option value="oldest" class="bg-dark-bg">Más Antiguos</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contenedor para las tarjetas de empleo -->
+        <section>
+            <!-- LA LÍNEA CORREGIDA ESTÁ AQUÍ -->
+            <div id="job_listings_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- El spinner de carga se muestra mientras se obtienen los datos -->
+                <div id="loading_spinner" class="col-span-full text-center text-lg">
+                    <i class="fas fa-spinner fa-spin text-light-purple text-4xl mb-4"></i>
+                    <p>Cargando empleos...</p>
+                </div>
+                <!-- Mensaje por si no hay empleos -->
+                <div id="no_jobs_message" class="col-span-full text-center text-lg hidden">
+                    <p>Actualmente no hay ofertas de trabajo disponibles. ¡Vuelve pronto!</p>
+                </div>
+                <!-- Las tarjetas de empleo se insertarán aquí dinámicamente -->
+            </div>
+        </section>
+
+        <section class="mt-12 flex justify-center">
+            <div id="pagination_container" class="flex items-center gap-2">
+            </div>
+        </section>
+    </main>
+
+    <div id="chat-widget-container"></div>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

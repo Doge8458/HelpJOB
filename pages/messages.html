@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Mensajes - HelpJOB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { inter: ['Inter', 'sans-serif'] },
+                    colors: {
+                        'primary-blue': '#6a5acd', 'secondary-purple': '#8a2be2',
+                        'dark-bg': '#483d8b', 'light-purple': '#9370DB',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #6a5acd, #8a2be2);
+            min-height: 100vh; color: #fff;
+            padding-top: 6rem;
+        }
+        /* Scrollbar personalizado para la lista de chats y mensajes */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(147, 112, 219, 0.6); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9370DB; }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark-bg">
+
+    <header class="w-full bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg py-4 px-6 flex justify-between items-center fixed top-0 left-0 right-0 z-50 shadow-md">
+        <a href="index.html" class="flex items-center">
+            <img src="../assets/images/HelpJOB.png" alt="HelpJOB Logo" class="h-12 w-auto mr-5" />
+            <!-- <span class="text-white text-2xl font-bold">HelpJOB</span> -->
+        </a>
+        <nav>
+            <ul class="flex items-center space-x-6">
+                <li><a href="index.html" class="text-white hover:text-light-purple transition">Inicio</a></li>
+                <li><a href="messages.html" id="messagesLink" class="text-white hover:text-light-purple transition hidden"><i class="fas fa-comments mr-1"></i> Mensajes</a></li>
+                <li><a href="manage_jobs.html" id="dashboardLink" class="text-white hover:text-light-purple transition hidden">Dashboard</a></li>
+                <li id="profileSectionHeader" class="relative group hidden">
+                    <button class="flex items-center text-white focus:outline-none">
+                        <img id="profileImageHeader" src="" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-white mr-2">
+                        <span id="profileNameHeader"></span>
+                        <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                    </button>
+                    <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white bg-opacity-20 backdrop-filter backdrop-blur-md rounded-md shadow-lg py-1 hidden group-hover:block">
+                        <a href="profile.html" class="block px-4 py-2 text-white hover:bg-white hover:bg-opacity-20">Ver Perfil</a>
+                        <button id="logoutButton" class="block w-full text-left px-4 py-2 text-white hover:bg-white hover:bg-opacity-20">Cerrar Sesión</button>
+                    </div>
+                </li>
+                 <li><a href="login.html" id="loginButtonHeader" class="px-4 py-2 rounded-lg bg-white bg-opacity-20 hover:bg-opacity-30 transition hidden">Iniciar Sesión</a></li>
+                <li><a href="register.html" id="registerButtonHeader" class="px-4 py-2 rounded-lg bg-gradient-to-r from-primary-blue to-secondary-purple hover:from-secondary-purple hover:to-primary-blue transition hidden">Registrarse</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 h-[calc(100vh-8rem)]">
+        <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl shadow-2xl border border-white border-opacity-20 h-full flex">
+            
+            <!-- Columna de Conversaciones -->
+            <aside id="conversations-list" class="w-1/3 border-r border-white border-opacity-20 flex flex-col custom-scrollbar overflow-y-auto">
+                <div class="p-4 border-b border-white border-opacity-20">
+                    <h2 class="text-xl font-bold">Conversaciones</h2>
+                </div>
+                <div id="conv-list-container" class="flex-grow">
+                    <!-- Las conversaciones se cargarán aquí -->
+                    <p class="p-4 text-gray-300">Cargando...</p>
+                </div>
+            </aside>
+
+            <!-- Área de Chat Principal -->
+            <section id="chat-area" class="w-2/3 flex flex-col">
+                <div id="chat-welcome" class="flex-grow flex flex-col justify-center items-center text-center p-8">
+                    <i class="fas fa-comments text-6xl text-light-purple mb-4"></i>
+                    <h2 class="text-2xl font-bold">Bienvenido a tus Mensajes</h2>
+                    <p class="text-gray-300">Selecciona una conversación de la izquierda para empezar a chatear.</p>
+                </div>
+
+                <div id="chat-conversation" class="hidden flex-grow flex flex-col min-h-0">
+                    <!-- Cabecera del Chat -->
+                    <div id="chat-header" class="p-4 border-b border-white border-opacity-20 flex items-center gap-4">
+                        <!-- Contenido dinámico -->
+                    </div>
+                    <!-- Cuerpo de Mensajes -->
+                    <div id="chat-messages" class="flex-grow p-4 space-y-4 overflow-y-auto custom-scrollbar">
+                        <!-- Mensajes se cargarán aquí -->
+                    </div>
+                    <!-- Input para enviar mensaje -->
+                    <div id="chat-input-container" class="p-4 border-t border-white border-opacity-20">
+                        <form id="sendMessageForm" class="flex items-center gap-2">
+                            <input type="text" id="message-input" placeholder="Escribe un mensaje..." required autocomplete="off" class="flex-grow p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue text-white placeholder-gray-300">
+                            <button type="submit" class="px-4 py-3 rounded-lg bg-primary-blue hover:bg-secondary-purple transition text-white">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <!-- --- INICIO: CÓDIGO AÑADIDO (Widget de chat global) --- -->
+    <div id="chat-widget-container"></div>
+    <!-- --- FIN: CÓDIGO AÑADIDO --- -->
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

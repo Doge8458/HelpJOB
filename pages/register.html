@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse - HelpJOB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { inter: ['Inter', 'sans-serif'], },
+                    colors: {
+                        'primary-blue': '#6a5acd',
+                        'secondary-purple': '#8a2be2',
+                        'dark-bg': '#483d8b',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #6a5acd, #8a2be2);
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .input-icon-container { position: relative; display: flex; align-items: center; }
+        .input-icon-container .icon { position: absolute; left: 1rem; color: rgba(255, 255, 255, 0.7); }
+        .input-icon-container input, .input-icon-container textarea, .input-icon-container select { padding-left: 2.5rem; width: 100%; }
+        .input-icon-container .password-toggle { position: absolute; right: 1rem; cursor: pointer; color: rgba(255, 255, 255, 0.7); }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark-bg font-inter text-white">
+
+    <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl shadow-2xl p-8 md:p-12 w-full max-w-4xl border border-white border-opacity-20">
+        <h1 class="text-3xl md:text-4xl font-bold text-center mb-4">Crear Cuenta</h1>
+        <p class="text-lg text-center text-gray-200 mb-8">Únete a la comunidad de HelpJOB</p>
+
+        <form id="registerForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Campos básicos -->
+            <div>
+                <label for="full_name" class="block text-sm font-medium mb-2">Nombre Completo <span class="text-red-400">*</span></label>
+                <div class="input-icon-container"><i class="fas fa-user icon"></i><input type="text" id="full_name" name="full_name" required class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue"></div>
+            </div>
+            <div>
+                <label for="email" class="block text-sm font-medium mb-2">Email <span class="text-red-400">*</span></label>
+                <div class="input-icon-container"><i class="fas fa-envelope icon"></i><input type="email" id="email" name="email" required class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue"></div>
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium mb-2">Contraseña <span class="text-red-400">*</span></label>
+                <div class="input-icon-container"><i class="fas fa-lock icon"></i><input type="password" id="password" name="password" required class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue"><i class="fas fa-eye password-toggle" data-target="password"></i></div>
+            </div>
+            <div>
+                <label for="confirm_password" class="block text-sm font-medium mb-2">Confirmar Contraseña <span class="text-red-400">*</span></label>
+                <div class="input-icon-container"><i class="fas fa-lock icon"></i><input type="password" id="confirm_password" name="confirm_password" required class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue"><i class="fas fa-eye password-toggle" data-target="confirm_password"></i></div>
+            </div>
+            <div>
+                <label for="phone_number" class="block text-sm font-medium mb-2">Teléfono</label>
+                <div class="input-icon-container"><i class="fas fa-phone icon"></i><input type="tel" id="phone_number" name="phone_number" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue"></div>
+            </div>
+            <div>
+                <label for="location" class="block text-sm font-medium mb-2">Ubicación</label>
+                <div class="input-icon-container"><i class="fas fa-map-marker-alt icon"></i><input type="text" id="location" name="location" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue"></div>
+            </div>
+
+            <!-- Tipo de Usuario -->
+            <div class="md:col-span-2">
+                <label for="user_type" class="block text-sm font-medium mb-2">Tipo de Usuario <span class="text-red-400">*</span></label>
+                <select id="user_type" name="user_type" required class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue text-white">
+                    <option value="" disabled selected class="bg-dark-bg">Selecciona tu tipo de usuario</option>
+                    <option value="applicant" class="bg-dark-bg">Aspirante - Busco empleo</option>
+                    <option value="employer" class="bg-dark-bg">Empleador - Publico empleos como individuo</option>
+                    <option value="company" class="bg-dark-bg">Empresa - Publico empleos para mi organización</option>
+                </select>
+            </div>
+
+            <!-- Campos para Aspirante (Ocultos por defecto) -->
+            <div id="applicant_fields" class="md:col-span-2 space-y-6 hidden">
+                <div>
+                    <label for="work_experience" class="block text-sm font-medium mb-2">Experiencia Laboral</label>
+                    <textarea id="work_experience" name="work_experience" rows="4" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue"></textarea>
+                </div>
+                <div>
+                    <label for="skills" class="block text-sm font-medium mb-2">Habilidades</label>
+                    <input type="text" id="skills" name="skills" placeholder="Ej: JavaScript, React, Python" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue">
+                </div>
+            </div>
+
+            <!-- Campos para Empleador/Empresa (Ocultos por defecto) -->
+            <div id="employer_company_fields" class="md:col-span-2 space-y-6 hidden">
+                <div>
+                    <label for="company_name" class="block text-sm font-medium mb-2">Nombre de la Empresa <span class="text-red-400">*</span></label>
+                    <input type="text" id="company_name" name="company_name" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue">
+                </div>
+                <div>
+                    <label for="company_role" class="block text-sm font-medium mb-2">Tu Cargo <span class="text-red-400">*</span></label>
+                    <input type="text" id="company_role" name="company_role" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue">
+                </div>
+            </div>
+            
+            <div class="md:col-span-2">
+                <label for="bio" class="block text-gray-200 text-sm font-medium mb-2">Biografía</label>
+                <textarea id="bio" name="bio" placeholder="Cuéntanos sobre ti..." rows="4" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border-white/30 focus:ring-2 focus:ring-primary-blue"></textarea>
+            </div>
+
+            <div id="message_box" class="md:col-span-2 hidden"></div>
+
+            <div class="md:col-span-2">
+                <button type="submit" class="w-full py-3 rounded-lg bg-gradient-to-r from-primary-blue to-secondary-purple hover:from-secondary-purple hover:to-primary-blue text-white text-lg font-semibold shadow-md transform hover:scale-105 transition">
+                    Crear Cuenta
+                </button>
+            </div>
+        </form>
+
+        <p class="text-center text-gray-200 mt-8">
+            ¿Ya tienes una cuenta? <a href="login.html" class="text-blue-300 hover:underline font-semibold">Inicia sesión aquí</a>
+        </p>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

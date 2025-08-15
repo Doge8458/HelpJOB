@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - HelpJOB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carga de la librería Cropper.js -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#6a5acd',
+                        'secondary-purple': '#8a2be2',
+                        'dark-bg': '#483d8b',
+                        'light-purple': '#9370DB',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #6a5acd, #8a2be2);
+            min-height: 100vh;
+            color: #fff;
+            padding-top: 6rem;
+            padding-bottom: 2rem;
+        }
+        /* Estilos para el modal de recorte */
+        #cropperModal.hidden {
+            display: none;
+        }
+        /* Estilo para que el recorte sea circular como en Discord */
+        .cropper-view-box,
+        .cropper-face {
+            border-radius: 50%;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark-bg">
+
+    <header class="w-full bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg py-4 px-6 flex justify-between items-center sticky top-0 z-50 shadow-md">
+        <a href="index.html" class="flex items-center">
+            <img src="../assets/images/HelpJOB.png" alt="HelpJOB Logo" class="h-10 w-auto mr-2" />
+            <!-- <span class="text-white text-2xl font-bold">HelpJOB</span> -->
+        </a>
+        <nav>
+            <ul class="flex items-center space-x-6">
+                <li><a href="index.html" class="text-white hover:text-light-purple transition">Inicio</a></li>
+                <li><a href="my_applications.html" id="myApplicationsLink" class="text-white hover:text-light-purple transition hidden"><i class="fas fa-file-alt mr-1"></i> Mis Postulaciones</a></li>
+                <li><a href="messages.html" id="messagesLink" class="text-white hover:text-light-purple transition hidden"><i class="fas fa-comments mr-1"></i> Mensajes</a></li>
+                <li><a href="manage_jobs.html" id="dashboardLink" class="text-white hover:text-light-purple transition hidden">Dashboard</a></li>
+                <li id="profileSectionHeader" class="relative group hidden">
+                    <button class="flex items-center text-white focus:outline-none">
+                        <img id="profileImageHeader" src="" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-white mr-2">
+                        <span id="profileNameHeader"></span>
+                        <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                    </button>
+                    <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white bg-opacity-20 backdrop-filter backdrop-blur-md rounded-md shadow-lg py-1 hidden group-hover:block">
+                        <a href="profile.html" class="block px-4 py-2 text-white hover:bg-white hover:bg-opacity-20">Ver Perfil</a>
+                        <button id="logoutButton" class="block w-full text-left px-4 py-2 text-white hover:bg-white hover:bg-opacity-20">Cerrar Sesión</button>
+                    </div>
+                </li>
+                <li><a href="login.html" id="loginButtonHeader" class="px-4 py-2 rounded-lg bg-white bg-opacity-20 hover:bg-opacity-30 transition hidden">Iniciar Sesión</a></li>
+                <li><a href="register.html" id="registerButtonHeader" class="px-4 py-2 rounded-lg bg-gradient-to-r from-primary-blue to-secondary-purple hover:from-secondary-purple hover:to-primary-blue transition hidden">Registrarse</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-10">
+        <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl shadow-2xl p-8 md:p-12 w-full max-w-4xl mx-auto border border-white border-opacity-20">
+            <h1 class="text-3xl md:text-4xl font-bold text-center mb-4">Mi Perfil</h1>
+            <p class="text-lg text-center text-gray-200 mb-8">Mantén tu información actualizada</p>
+
+            <div class="flex flex-col items-center mb-8">
+                <div class="relative mb-4">
+                    <img id="current_profile_image" src="https://placehold.co/120x120/6a5acd/ffffff?text=U" alt="Profile Image" class="w-32 h-32 rounded-full border-4 border-white object-cover">
+                    <label for="profile_image_upload" class="absolute bottom-0 right-0 bg-light-purple hover:bg-purple-600 p-2 rounded-full cursor-pointer text-white shadow-md transition">
+                        <i class="fas fa-camera"></i>
+                        <input type="file" id="profile_image_upload" accept="image/jpeg,image/png" class="hidden">
+                    </label>
+                </div>
+                <h2 id="profile_full_name" class="text-2xl font-bold text-white">Cargando...</h2>
+            </div>
+            
+            <form id="profileForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 <div>
+                    <label for="full_name" class="block text-gray-200 text-sm font-medium mb-2">Nombre Completo <span class="text-red-400">*</span></label>
+                    <input type="text" id="full_name" name="full_name" required class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white placeholder-gray-300">
+                </div>
+                <div>
+                    <label for="email" class="block text-gray-200 text-sm font-medium mb-2">Email <span class="text-red-400">*</span></label>
+                    <input type="email" id="email" name="email" required readonly class="w-full p-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-gray-400 cursor-not-allowed">
+                </div>
+                 <div>
+                    <label for="phone_number" class="block text-gray-200 text-sm font-medium mb-2">Teléfono</label>
+                    <input type="tel" id="phone_number" name="phone_number" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white placeholder-gray-300">
+                </div>
+                <div>
+                    <label for="location" class="block text-gray-200 text-sm font-medium mb-2">Ubicación</label>
+                    <input type="text" id="location" name="location" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white placeholder-gray-300">
+                </div>
+
+                <!-- Campos específicos para Aspirante -->
+                <div id="applicant_profile_fields" class="md:col-span-2 space-y-6 hidden">
+                    <div>
+                        <label class="block text-gray-200 text-sm font-medium mb-2">Currículum (PDF)</label>
+                        <div class="flex items-center gap-4">
+                            <label for="cv_upload" class="px-4 py-2 rounded-lg bg-white bg-opacity-20 hover:bg-opacity-30 cursor-pointer"><i class="fas fa-upload mr-2"></i>Subir CV</label>
+                            <input type="file" id="cv_upload" accept="application/pdf" class="hidden">
+                            <span id="current_cv_filename" class="text-gray-300">No hay CV subido</span>
+                            <a id="view_cv_link" href="#" target="_blank" class="text-blue-300 hover:underline hidden">Ver CV</a>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="work_experience" class="block text-gray-200 text-sm font-medium mb-2">Experiencia Laboral</label>
+                        <textarea id="work_experience" name="work_experience" rows="4" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white"></textarea>
+                    </div>
+                    <div>
+                        <label for="skills" class="block text-gray-200 text-sm font-medium mb-2">Habilidades</label>
+                        <input type="text" id="skills" name="skills" placeholder="Ej. JavaScript, React, SQL" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white">
+                    </div>
+                </div>
+
+                <!-- Campos específicos para Empleador/Empresa -->
+                <div id="employer_profile_fields" class="md:col-span-2 space-y-6 hidden">
+                    <div>
+                        <label for="company_name" class="block text-gray-200 text-sm font-medium mb-2">Nombre de la Empresa</label>
+                        <input type="text" id="company_name" name="company_name" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white">
+                    </div>
+                    <div>
+                        <label for="company_role" class="block text-gray-200 text-sm font-medium mb-2">Mi Cargo</label>
+                        <input type="text" id="company_role" name="company_role" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white">
+                    </div>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label for="bio" class="block text-gray-200 text-sm font-medium mb-2">Biografía</label>
+                    <textarea id="bio" name="bio" rows="4" class="w-full p-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-blue text-white"></textarea>
+                </div>
+
+                <div id="message_box" class="md:col-span-2 hidden"></div>
+
+                <div class="md:col-span-2">
+                    <button type="submit" class="w-full py-3 rounded-lg bg-gradient-to-r from-primary-blue to-secondary-purple hover:from-secondary-purple hover:to-primary-blue text-white text-lg font-semibold shadow-md transform hover:scale-105 transition">
+                        Actualizar Perfil
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Modal para recortar la imagen de perfil -->
+    <div id="cropperModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[1000] hidden">
+        <div class="bg-dark-bg p-6 rounded-lg shadow-xl w-11/12 max-w-2xl text-white">
+            <h3 class="text-xl font-bold mb-4 text-center">Editar Imagen de Perfil</h3>
+            <div class="mb-4 max-h-[60vh] flex justify-center items-center">
+                <img id="imageToCrop" src="" alt="Image to crop" class="max-w-full">
+            </div>
+            <div class="flex justify-between items-center mt-4">
+                <button id="cancelCrop" type="button" class="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700 transition">Cancelar</button>
+                <button id="applyCrop" type="button" class="px-4 py-2 rounded-lg bg-primary-blue hover:bg-secondary-purple transition">Aplicar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="chat-widget-container"></div>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Empleos - HelpJOB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#6a5acd',
+                        'secondary-purple': '#8a2be2',
+                        'dark-bg': '#483d8b',
+                        'light-purple': '#9370DB',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #6a5acd, #8a2be2);
+            min-height: 100vh;
+            color: #fff;
+            padding-top: 6rem;
+            padding-bottom: 2rem;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark-bg">
+
+    <header class="w-full bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg py-4 px-6 flex justify-between items-center fixed top-0 left-0 right-0 z-50 shadow-md">
+        <a href="index.html" class="flex items-center">
+            <img src="../assets/images/HelpJOB.png" alt="HelpJOB Logo" class="h-12 w-auto mr-5" />
+            <!-- <span class="text-white text-2xl font-bold">HelpJOB</span> -->
+        </a>
+        <nav>
+            <ul class="flex items-center space-x-6">
+                <li><a href="index.html" class="text-white hover:text-light-purple transition">Inicio</a></li>
+                <li><a href="my_applications.html" id="myApplicationsLink" class="text-white hover:text-light-purple transition hidden"><i class="fas fa-file-alt mr-1"></i> Mis Postulaciones</a></li>
+                <li><a href="messages.html" id="messagesLink" class="text-white hover:text-light-purple transition hidden"><i class="fas fa-comments mr-1"></i> Mensajes</a></li>
+                <li><a href="manage_jobs.html" id="dashboardLink" class="text-white hover:text-light-purple transition hidden">Dashboard</a></li>
+                <li id="profileSectionHeader" class="relative group hidden">
+                    <a href="#" class="flex items-center text-white">
+                        <img id="profileImageHeader" src="" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-white mr-2">
+                        <span id="profileNameHeader"></span>
+                    </a>
+                    <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white bg-opacity-10 backdrop-filter backdrop-blur-md rounded-md shadow-lg py-1 hidden">
+                        <a href="profile.html" class="block px-4 py-2 text-white hover:bg-white hover:bg-opacity-20">Ver Perfil</a>
+                        <button id="logoutButton" class="block w-full text-left px-4 py-2 text-white hover:bg-white hover:bg-opacity-20">Cerrar Sesión</button>
+                    </div>
+                </li>
+                <li><a href="login.html" id="loginButtonHeader" class="px-4 py-2 rounded-lg bg-white bg-opacity-20 hover:bg-opacity-30 transition hidden">Iniciar Sesión</a></li>
+                <li><a href="register.html" id="registerButtonHeader" class="px-4 py-2 rounded-lg bg-gradient-to-r from-primary-blue to-secondary-purple hover:from-secondary-purple hover:to-primary-blue transition hidden">Registrarse</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-10">
+        <div id="main-content" class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl shadow-2xl p-8 md:p-12 w-full max-w-4xl mx-auto border border-white border-opacity-20">
+            <h1 class="text-3xl md:text-4xl font-bold text-center mb-4">Gestionar Mis Empleos</h1>
+            <p class="text-lg text-center text-gray-200 mb-8">Administra tus publicaciones y aplicaciones</p>
+            
+            <div class="mb-8 text-center">
+                 <a href="post_job.html" class="px-6 py-3 rounded-lg bg-gradient-to-r from-primary-blue to-secondary-purple hover:from-secondary-purple hover:to-primary-blue text-white text-lg font-semibold shadow-md transform hover:scale-105 transition duration-300 ease-in-out">
+                    <i class="fas fa-plus-circle mr-2"></i>Publicar Nuevo Empleo
+                </a>
+            </div>
+
+            <div id="employer_jobs_list_container" class="space-y-6">
+                <div id="loading_spinner_employer_jobs" class="text-center text-lg">
+                    <i class="fas fa-spinner fa-spin text-light-purple text-4xl mb-4"></i>
+                    <p>Cargando tus publicaciones...</p>
+                </div>
+                <div id="no_employer_jobs_message" class="text-center text-lg hidden">
+                    <p>No has publicado ningún empleo aún.</p>
+                </div>
+            </div>
+            
+            <div id="message_box" class="hidden"></div>
+
+            <!-- Modal de Confirmación de Borrado -->
+            <div id="deleteConfirmationModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[1000] hidden">
+                <div class="bg-dark-bg p-8 rounded-lg shadow-xl w-11/12 max-w-md text-white border border-white border-opacity-20">
+                    <h3 class="text-2xl font-bold mb-4 text-center">Confirmar Eliminación</h3>
+                    <p class="text-center text-gray-300 mb-6">¿Estás seguro de que quieres eliminar esta publicación de empleo? Esta acción no se puede deshacer.</p>
+                    <div class="flex justify-center items-center gap-4 mt-4">
+                        <button id="cancelDeleteBtn" type="button" class="px-6 py-2 rounded-lg bg-gray-600 hover:bg-gray-700 transition font-semibold">Cancelar</button>
+                        <button id="confirmDeleteBtn" type="button" class="px-6 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition font-bold">Sí, Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="chat-widget-container"></div>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>
